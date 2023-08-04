@@ -5,7 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://artemonlypnyk:E4ZRzbv4zPy6iSeF@testcluster.fc8u0ci.mongodb.net/task3Notes?retryWrites=true&w=majority',
+      //insert password here
+      'mongodb+srv://artemonlypnyk:PASSWORD@testcluster.fc8u0ci.mongodb.net/task3Notes?retryWrites=true&w=majority',
     ),
     NoteModule,
   ],
