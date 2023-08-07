@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -42,21 +43,24 @@ export class NoteController {
   @ApiOperation({ summary: 'Delete Note by Id' })
   @ApiResponse({ status: 200, type: Note })
   @Delete(':id')
-  async deleteNote(@Param('id') id: string) {
+  async deleteNote(@Param('id', ParseIntPipe) id: number) {
     return this.noteService.deleteNote(id);
   }
 
   @ApiOperation({ summary: 'Get Note by Id' })
   @ApiResponse({ status: 200, type: Note })
   @Get(':id')
-  async getOne(@Param('id') id: string) {
+  async getOne(@Param('id', ParseIntPipe) id: number) {
     return this.noteService.getOne(id);
   }
 
   @ApiOperation({ summary: 'Edit Note by Id' })
   @ApiResponse({ status: 200, type: Note })
   @Patch(':id')
-  async editNote(@Param('id') id: string, @Body() editNoteDto: EditNoteDto) {
+  async editNote(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() editNoteDto: EditNoteDto,
+  ) {
     return this.noteService.editNote(id, editNoteDto);
   }
 }

@@ -1,13 +1,23 @@
 import { Module } from '@nestjs/common';
 import { NoteModule } from './model/note/note.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule } from '@nestjs/config';
+import { Note } from './model/note/note.model';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      //insert password here
-      'mongodb+srv://artemonlypnyk:PASSWORD@testcluster.fc8u0ci.mongodb.net/task3Notes?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(),
+    SequelizeModule.forRoot({
+      dialect: 'postgres',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.PORT,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
+      models: [Note],
+      autoLoadModels: true,
+      synchronize: true,
+    }),
     NoteModule,
   ],
   controllers: [],
