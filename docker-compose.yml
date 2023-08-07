@@ -10,6 +10,28 @@ services:
       POSTGRES_DB: task
     ports:
       - '5432:5432'
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: task
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    links:
+      - db:db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
@@ -19,3 +41,5 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - '5050:80'
+networks:
+  nesjs-network:
