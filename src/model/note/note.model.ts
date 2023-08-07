@@ -1,6 +1,5 @@
-import { HydratedDocument } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 export enum E_Category {
   Task = 'Task',
@@ -8,29 +7,25 @@ export enum E_Category {
   RandomThought = 'Random Thought',
 }
 
-export type CatDocument = HydratedDocument<Note>;
-
-@Schema()
-export class Note {
+@Table
+export class Note extends Model {
   @ApiProperty({ example: 'My Note', description: 'Name of Note' })
-  @Prop()
+  @Column
   name: string;
 
   @ApiProperty({ example: 'I need to go shop', description: 'Content of Note' })
-  @Prop()
+  @Column
   content: string;
 
   @ApiProperty({ example: '23.01.2003', description: 'Date created' })
-  @Prop()
+  @Column
   date: Date;
 
   @ApiProperty({ example: 'Task | Idea', description: 'Category of Note' })
-  @Prop({ type: String, enum: E_Category, default: E_Category.Task })
+  @Column({ type: DataType.ENUM(...Object.values(E_Category)) })
   category: E_Category;
 
   @ApiProperty({ example: 'false', description: 'Is archived Note or not' })
-  @Prop()
+  @Column({ defaultValue: false })
   archived: boolean;
 }
-
-export const NoteSchema = SchemaFactory.createForClass(Note);
